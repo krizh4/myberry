@@ -5,10 +5,12 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express');
 const expresslayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 const indexRouter = require('./routes/index');
+const authorRouter = require('./routes/authors');
 
 mongoose.connect(process.env.DATABASE_URL), {useNewUrlParser: true, useUnifiedTopology: true};
 const db = mongoose.connection
@@ -20,7 +22,9 @@ app.set('views', __dirname + '/views');
 app.set('layout', 'layouts/layout');
 app.use(expresslayouts);
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: false}));
 
 app.use('/', indexRouter);
+app.use('/authors', authorRouter);
 
 app.listen(process.env.PORT || 3000);
