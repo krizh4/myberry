@@ -6,6 +6,7 @@ const express = require('express');
 const expresslayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.set('layout', 'layouts/layout');
 app.use(expresslayouts);
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false}));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/authors', authorRouter);
